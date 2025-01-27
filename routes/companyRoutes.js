@@ -4,8 +4,8 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/register", registerCompany);
-router.post("/login", loginCompany);
-router.get("/verify-email/:token", verifyEmail);
+router.post("/register",  registerCompany);
+router.post("/login", authMiddleware, loginCompany);
+router.get("/verify-email/:token", authMiddleware, verifyEmail);
 
 module.exports = router;

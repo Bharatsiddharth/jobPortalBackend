@@ -51,15 +51,20 @@ exports.loginCompany = async (req, res) => {
       return res.status(400).json({ message: "Please verify your email first." });
     }
 
+    // Generate the token
     const token = jwt.sign({ id: company._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
+    // Set the token as an HTTP-only cookie
     res.cookie("token", token, { httpOnly: true, secure: process.env.NODE_ENV === "production" });
-    res.json({ message: "Logged in successfully." });
+
+    // Include the token in the JSON response
+    res.json({ token, message: "Logged in successfully." });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Server error." });
   }
 };
+
 
 exports.verifyEmail = async (req, res) => {
   try {
